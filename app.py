@@ -11,6 +11,9 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Use Streamlit's minimal toolbar where supported.
+st.set_option("client.toolbarMode", "minimal")
+
 BLUE = "#3559D8"
 PEACH = "#F9C6B5"
 LAVENDER = "#DCD2FF"
@@ -528,11 +531,110 @@ st.markdown(
         border-color: #E9E7EF;
     }
 
+    /* Hide Streamlit's built-in menu, toolbar, footer, and GitHub links. */
+    #MainMenu,
+    footer,
+    [data-testid="stToolbar"],
+    [data-testid="stStatusWidget"],
+    .viewerBadge_container__1QSob,
+    a[href*="github.com"],
+    a[aria-label*="GitHub"],
+    a[title*="GitHub"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* Top-to-bottom entrance: begin pale, then return to the original colors. */
+    @keyframes qalqan-drop-color {
+        0% {
+            opacity: 0;
+            transform: translateY(-22px);
+            filter: grayscale(1) brightness(1.8);
+        }
+        55% {
+            opacity: 1;
+            filter: grayscale(0.45) brightness(1.25);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+            filter: grayscale(0) brightness(1);
+        }
+    }
+
+    @keyframes qalqan-sidebar-in {
+        0% {
+            opacity: 0;
+            transform: translateY(-16px);
+            filter: grayscale(1) brightness(1.7);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+            filter: grayscale(0) brightness(1);
+        }
+    }
+
+    /* Main content appears in a gentle cascade from the top down. */
+    .block-container > div {
+        animation: qalqan-drop-color 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .block-container > div:nth-child(2) { animation-delay: 90ms; }
+    .block-container > div:nth-child(3) { animation-delay: 180ms; }
+    .block-container > div:nth-child(4) { animation-delay: 270ms; }
+    .block-container > div:nth-child(5) { animation-delay: 360ms; }
+    .block-container > div:nth-child(6) { animation-delay: 450ms; }
+    .block-container > div:nth-child(7) { animation-delay: 540ms; }
+    .block-container > div:nth-child(8) { animation-delay: 630ms; }
+
+    section[data-testid="stSidebar"] {
+        animation: qalqan-sidebar-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .hero {
+        animation: qalqan-drop-color 950ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .soft-card,
+    .metric-card {
+        transition: transform 220ms ease, box-shadow 220ms ease,
+                    border-color 220ms ease;
+    }
+
+    .soft-card:hover,
+    .metric-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 28px rgba(36, 38, 66, 0.07);
+        border-color: #DCD7F0;
+    }
+
+    .stButton > button {
+        transition: transform 180ms ease, box-shadow 180ms ease,
+                    background-color 180ms ease;
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(53, 89, 216, 0.18);
+    }
+
     .footer {
         text-align: center;
         color: #88899B;
         font-size: 12px;
         padding: 28px 0 0;
+        animation: qalqan-drop-color 1000ms ease-out both;
+    }
+
+    /* Respect visitors who prefer reduced motion. */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+            transition-duration: 0.01ms !important;
+        }
     }
     </style>
     """,
