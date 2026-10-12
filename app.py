@@ -13,12 +13,12 @@ st.set_page_config(
 # Use Streamlit's minimal toolbar where supported.
 st.set_option("client.toolbarMode", "minimal")
 
-BLUE = "#78D9A5"
-PEACH = "#E6A36F"
-LAVENDER = "#A7C7B2"
-MINT = "#78D9A5"
-DARK = "#E5F4EB"
-MUTED = "#62776B"
+BLUE = "#79C9B0"
+PEACH = "#D9A36E"
+LAVENDER = "#9BBBD0"
+MINT = "#79C9B0"
+DARK = "#E6EDF4"
+MUTED = "#9BAFC0"
 
 RULES = [
     {
@@ -363,13 +363,13 @@ st.markdown(
     }
 
     .stApp {
-        background: #FAF9F7;
-        color: #E5F4EB;
+        background: #0A111C;
+        color: #E6EDF4;
     }
 
     h1, h2, h3 {
         font-family: 'Manrope', sans-serif !important;
-        color: #E5F4EB;
+        color: #E6EDF4;
     }
 
     .block-container {
@@ -379,22 +379,22 @@ st.markdown(
     }
 
     section[data-testid="stSidebar"] {
-        background: #183B2A !important;
-        border-right: 1px solid #E2DDF7;
+        background: #142333 !important;
+        border-right: 1px solid #24364A;
     }
 
     /* Force sidebar text to stay dark */
     section[data-testid="stSidebar"],
     section[data-testid="stSidebar"] * {
-        color: #E5F4EB;
+        color: #E6EDF4;
     }
 
     section[data-testid="stSidebar"] h1 {
-        color: #78D9A5 !important;
+        color: #79C9B0 !important;
     }
 
     section[data-testid="stSidebar"] [data-testid="stRadio"] label {
-        color: #E5F4EB !important;
+        color: #E6EDF4 !important;
         background: transparent;
         border-radius: 10px;
         padding: 9px 10px;
@@ -403,22 +403,22 @@ st.markdown(
 
     section[data-testid="stSidebar"] [data-testid="stRadio"] label p,
     section[data-testid="stSidebar"] [data-testid="stRadio"] label span {
-        color: #E5F4EB !important;
+        color: #E6EDF4 !important;
         font-weight: 600 !important;
     }
 
     section[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {
-        background: #E5DFFF !important;
+        background: #1A3442 !important;
     }
 
     /* Selected navigation item */
     section[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) {
-        background: #A78BFA !important;
+        background: #79C9B0 !important;
         border-radius: 10px;
     }
 
     section[data-testid="stSidebar"] [data-testid="stRadio"] input {
-        accent-color: #78D9A5 !important;
+        accent-color: #79C9B0 !important;
     }
 
     section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] {
@@ -426,10 +426,10 @@ st.markdown(
     }
 
     .hero {
-        background: linear-gradient(125deg, #0F2133 0%, #13283A 55%, #153C43 100%);
+        background: linear-gradient(125deg, #101D2C 0%, #142538 55%, #18343B 100%);
         padding: 32px;
         border-radius: 24px;
-        border: 1px solid #294A38;
+        border: 1px solid #26394A;
         margin-bottom: 22px;
     }
 
@@ -438,7 +438,7 @@ st.markdown(
         letter-spacing: 2px;
         font-size: 12px;
         font-weight: 800;
-        color: #78D9A5;
+        color: #79C9B0;
     }
 
     .hero-title {
@@ -447,7 +447,7 @@ st.markdown(
         line-height: 1.15;
         font-weight: 800;
         margin: 10px 0;
-        color: #E5F4EB;
+        color: #E6EDF4;
     }
 
     .hero-copy {
@@ -458,7 +458,7 @@ st.markdown(
 
     .soft-card {
         background: white;
-        border: 1px solid #294A38;
+        border: 1px solid #26394A;
         border-radius: 18px;
         padding: 20px;
         margin-bottom: 12px;
@@ -470,20 +470,20 @@ st.markdown(
 
     .metric-card {
         background: white;
-        border: 1px solid #294A38;
+        border: 1px solid #26394A;
         border-radius: 18px;
         padding: 20px;
         min-height: 115px;
     }
 
     .metric-label {
-        color: #91A99B;
+        color: #9BAFC0;
         font-size: 13px;
         font-weight: 600;
     }
 
     .metric-value {
-        color: #E5F4EB;
+        color: #E6EDF4;
         font-family: 'Manrope', sans-serif;
         font-size: 29px;
         font-weight: 800;
@@ -492,8 +492,8 @@ st.markdown(
 
     .tag {
         display: inline-block;
-        background: #183B2A;
-        color: #A7E8C2;
+        background: #142333;
+        color: #B0DED0;
         border-radius: 20px;
         padding: 5px 10px;
         font-size: 12px;
@@ -501,7 +501,7 @@ st.markdown(
     }
 
     .stButton > button {
-        background: #78D9A5;
+        background: #79C9B0;
         color: white !important;
         border: none;
         border-radius: 12px;
@@ -511,15 +511,15 @@ st.markdown(
     }
 
     .stButton > button:hover {
-        background: #5AC58B;
+        background: #67BBA0;
         color: white !important;
         border: none;
     }
 
     .stTextArea textarea {
         border-radius: 14px;
-        border-color: #315340;
-        background: #10261D;
+        border-color: #30495A;
+        background: #101D2A;
     }
 
     div[data-baseweb="select"] > div {
@@ -527,7 +527,7 @@ st.markdown(
     }
 
     hr {
-        border-color: #294A38;
+        border-color: #26394A;
     }
 
     /* Hide Streamlit's built-in menu, toolbar, footer, and GitHub links. */
@@ -556,16 +556,16 @@ st.markdown(
 
     /* Force the new midnight theme across Streamlit's main canvas and sidebar. */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-        background: #091713 !important;
-        color: #E5F4EB !important;
+        background: #0A111C !important;
+        color: #E6EDF4 !important;
     }
     [data-testid="stSidebar"] {
-        background: #0B1D16 !important;
-        border-right: 1px solid #294A38 !important;
+        background: #0D1723 !important;
+        border-right: 1px solid #26394A !important;
         animation: qalqan-sidebar-in 650ms cubic-bezier(.2,.8,.2,1) both;
     }
-    [data-testid="stSidebar"] * { color: #D8E9DE; }
-    .block-container { color: #E5F4EB; }
+    [data-testid="stSidebar"] * { color: #D8E3ED; }
+    .block-container { color: #E6EDF4; }
     .block-container [data-testid="stElementContainer"] {
         animation: qalqan-drop-color 650ms cubic-bezier(.2,.8,.2,1) both;
     }
@@ -578,52 +578,68 @@ st.markdown(
     .block-container [data-testid="stElementContainer"]:nth-of-type(8) { animation-delay: 700ms; }
     .hero { animation: qalqan-drop-color 750ms cubic-bezier(.2,.8,.2,1) both; }
     .soft-card, .metric-card {
-        background: #10261D !important;
-        border: 1px solid #294A38 !important;
-        color: #E5F4EB !important;
+        background: #101D2A !important;
+        border: 1px solid #26394A !important;
+        color: #E6EDF4 !important;
         transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
     }
     .soft-card:hover, .metric-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 18px rgba(0,0,0,.16);
-        border-color: #78D9A5 !important;
+        border-color: #79C9B0 !important;
     }
     .hero {
-        background: linear-gradient(125deg, #10271D 0%, #173D2D 55%, #1D3327 100%) !important;
-        border: 1px solid #315340 !important;
+        background: linear-gradient(125deg, #101D2A 0%, #142B3A 55%, #1A3038 100%) !important;
+        border: 1px solid #30495A !important;
     }
-    .hero-title, .metric-value { color: #E5F4EB !important; }
-    .eyebrow, .tag { color: #A7E8C2 !important; }
-    .tag { background: #183B2A !important; }
+    .hero-title, .metric-value { color: #E6EDF4 !important; }
+    .eyebrow, .tag { color: #B0DED0 !important; }
+    .tag { background: #142333 !important; }
     .stButton > button {
-        background: #78D9A5 !important;
-        color: #071A11 !important;
-        border: 1px solid #78D9A5 !important;
+        background: #79C9B0 !important;
+        color: #09151D !important;
+        border: 1px solid #79C9B0 !important;
         border-radius: 12px;
         font-weight: 800;
         transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
     }
     .stButton > button:hover {
-        background: #A7E8C2 !important;
-        color: #071A11 !important;
+        background: #B0DED0 !important;
+        color: #09151D !important;
         transform: translateY(-2px);
-        box-shadow: 0 5px 14px rgba(120,217,165,.14);
+        box-shadow: 0 5px 14px rgba(121,201,176,.12);
     }
+    /* Keep every interactive state in the same restrained blue-green palette. */
+    .stButton > button:focus,
+    .stButton > button:focus-visible,
+    .stButton > button:active,
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked),
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:hover {
+        outline: none !important;
+        box-shadow: 0 0 0 1px #79C9B0 !important;
+        border-color: #79C9B0 !important;
+        background-color: #18303A !important;
+        color: #E6EDF4 !important;
+    }
+    .stButton > button:focus p,
+    .stButton > button:active p { color: #E6EDF4 !important; }
+    input, textarea, [data-baseweb="select"] * { accent-color: #79C9B0 !important; }
+
     .stTextArea textarea, .stTextInput input {
-        background: #0C2017 !important;
-        color: #E5F4EB !important;
-        border-color: #315340 !important;
+        background: #0D1925 !important;
+        color: #E6EDF4 !important;
+        border-color: #30495A !important;
         border-radius: 14px;
     }
     div[data-baseweb="select"] > div {
-        background: #0C2017 !important;
-        border-color: #315340 !important;
+        background: #0D1925 !important;
+        border-color: #30495A !important;
         border-radius: 12px;
     }
-    hr { border-color: #294A38 !important; }
-    p, label, h1, h2, h3, h4, li { color: #D8E9DE; }
-    a { color: #A7E8C2 !important; }
-    .footer { color: #91A99B; font-size: 12px; padding: 28px 0 0; }
+    hr { border-color: #26394A !important; }
+    p, label, h1, h2, h3, h4, li { color: #D8E3ED; }
+    a { color: #B0DED0 !important; }
+    .footer { color: #9BAFC0; font-size: 12px; padding: 28px 0 0; }
 
     /* Respect visitors who prefer reduced motion. */
     @media (prefers-reduced-motion: reduce) {
@@ -1021,7 +1037,7 @@ elif page == "🧪 Test Lab":
                     <div class="metric-card">
                         <div class="metric-label">{label}</div>
                         <div class="metric-value">{value:.0%}</div>
-                        <div style="font-size:12px;color:#91A99B">{description}</div>
+                        <div style="font-size:12px;color:#9BAFC0">{description}</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
