@@ -31,7 +31,7 @@ RULES = [
             "act now", "immediately", "urgent", "urgently",
             "within 24 hours", "right now", "limited time",
             "last chance", "срочно", "немедленно", "прямо сейчас",
-            "в течение 24 часов", "последний шанс",
+            "в течение 24 часов", "последний шанс", "в течение 15 минут",
             "тез арада", "шұғыл", "дереу",
         ],
         "explanation": "The message pressures you to act quickly.",
@@ -101,7 +101,7 @@ RULES = [
             "your bank account", "final warning",
             "ваш аккаунт заблокирован", "аккаунт будет заблокирован",
             "ваш счёт заблокирован", "потеряете доступ",
-            "последнее предупреждение", "служба безопасности банка",
+            "последнее предупреждение", "служба безопасности банка", "служба безопасности вашего банка", "подозрительную активность", "предотвращения блокировки",
             "полиция", "аккаунт удалят",
             "аккаунтыңыз бұғатталды", "соңғы ескерту",
         ],
@@ -157,7 +157,7 @@ def analyze_message(message):
             r"\b(?:act|reply|respond|verify|pay|send|click)\s+(?:right\s+)?(?:now|immediately)\b",
             r"\b(?:account|access|offer|link)\s+(?:expires?|will expire)\b",
             r"\b(?:срочно|немедленно|незамедлительно)\b",
-            r"\b(?:до конца дня|в ближайшие \d+ минут|иначе)\b",
+            r"\b(?:до конца дня|в ближайшие \d+ минут|в течение \d+ минут|иначе)\b",
             r"\b(?:шұғыл|дереу|тез арада|бүгін соңғы күн)\b",
         ],
         "Prize or unexpected reward": [
@@ -300,8 +300,22 @@ def analyze_with_gemini(message):
         result["recommendation"] = advice
         result["ai_reasons"] = reasons
         return result, "Gemini AI + rule-based highlights"
-    except (urllib.error.URLError, TimeoutError, ValueError, KeyError, TypeError, IndexError, OSError):
-        return baseline, "AI unavailable right now. Showing rule-based analysis instead."
+    except urllib.error.HTTPError as exc:
+        # Never expose the API key, request headers, or raw provider responses.
+        status = exc.code
+        if status in (401, 403):
+            reason = "Gemini access denied (HTTP %s). Check the key and API permissions." % status
+        elif status == 404:
+            reason = "Gemini model not available (HTTP 404). Check the model name."
+        elif status == 429:
+            reason = "Gemini request limit reached (HTTP 429). Try later."
+        else:
+            reason = "Gemini API returned HTTP %s." % status
+        return baseline, "AI unavailable: " + reason + " Showing rule-based analysis."
+    except (urllib.error.URLError, TimeoutError, OSError):
+        return baseline, "AI unavailable: network error or timeout. Showing rule-based analysis."
+    except (ValueError, KeyError, TypeError, IndexError):
+        return baseline, "AI unavailable: unexpected Gemini response. Showing rule-based analysis."
 
 
 def risk_color(score):
