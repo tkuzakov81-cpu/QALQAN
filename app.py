@@ -277,7 +277,33 @@ def analyze_with_gemini(message):
         "contents": [{"parts": [{"text": instruction}]}],
         "generationConfig": {"temperature": 0.1, "responseMimeType": "application/json"},
     }).encode("utf-8")
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    # Discover models available to this API key instead of assuming a fixed name.
+    # Google can change the models offered to different projects.
+    try:
+        models_request = urllib.request.Request(
+            "https://generativelanguage.googleapis.com/v1beta/models?pageSize=100",
+            headers={"x-goog-api-key": key},
+        )
+        with urllib.request.urlopen(models_request, timeout=12) as model_response:
+            model_data = json.load(model_response)
+        candidates = [m["name"] for m in model_data.get("models", [])
+                      if "generateContent" in m.get("supportedGenerationMethods", [])
+                      and m.get("name", "").startswith("models/")]
+        # Prefer low-cost Flash text models, avoiding previews when possible.
+        preferred = ["models/gemini-2.5-flash", "models/gemini-2.5-flash-lite",
+                     "models/gemini-2.0-flash", "models/gemini-2.0-flash-lite"]
+        model_name = next((m for m in preferred if m in candidates), None)
+        if not model_name:
+            model_name = next((m for m in candidates if "flash" in m.lower()
+                               and "preview" not in m.lower()), None)
+        if not model_name:
+            return baseline, "AI unavailable: no supported Gemini Flash model is listed for this API key. Showing rule-based analysis."
+    except urllib.error.HTTPError as exc:
+        return baseline, "AI unavailable: cannot list Gemini models (HTTP %s). Check API key access and project permissions. Showing rule-based analysis." % exc.code
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError):
+        return baseline, "AI unavailable: could not check Gemini model availability. Showing rule-based analysis."
+
+    url = "https://generativelanguage.googleapis.com/v1beta/" + model_name + ":generateContent"
     request = urllib.request.Request(
         url, data=payload,
         headers={"Content-Type": "application/json", "x-goog-api-key": key},
