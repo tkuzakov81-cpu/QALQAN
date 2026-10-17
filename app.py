@@ -236,26 +236,71 @@ def analyze_message(message):
             })
 
     names = {item["name"] for item in findings}
-    score = sum(item["weight"] for item in findings)
 
-    # Combinations matter more than any single phrase.
+    # Context matters: a warning ABOUT scams is not itself a scam.
+    educational = bool(re.search(
+        r"(?:никогда\s+не\s+(?:сообщайте|передавайте|вводите|переходите)|"
+        r"не\s+(?:сообщайте|передавайте)\s+(?:парол|код)|"
+        r"(?:мошенник|фишинг|скам|осторожно|как распознать|признаки мошенничества)|"
+        r"(?:never share|do not share|beware of scams))",
+        normalized,
+    ))
+    direct_request = bool(re.search(
+        r"(?:\b(?:срочно\s+)?(?:назовите|сообщите|введите|подтвердите|переведите|"
+        r"оплатите|заплатите|скиньте|отправьте|установите|скачайте)\b|"
+        r"\b(?:send|enter|verify|transfer|pay|install)\b)", normalized,
+    ))
+
+    # Calibrated, non-additive scale. A single weak clue stays weak.
+    weights = {
+        "Urgency and pressure": 1,
+        "Threats and intimidation": 2,
+        "Money or payment demand": 2,
+        "Password, code or personal data": 2,
+        "Impersonation of an organization": 1,
+        "Links or external actions": 1,
+        "Secrecy or isolation": 1,
+        "Unexpected prize or easy profit": 2,
+        "Suspicious installation or remote access": 3,
+    }
+    score = sum(weights[name] for name in names)
+
+    # A targeted threat plus money/data is substantially more concerning.
     if "Threats and intimidation" in names and "Money or payment demand" in names:
-        score += 3
+        score += 2
+    if "Password, code or personal data" in names and direct_request:
+        score += 2
     if "Urgency and pressure" in names and (
-        "Password, code or personal data" in names or "Money or payment demand" in names
+        "Money or payment demand" in names or "Password, code or personal data" in names
     ):
-        score += 2
-    if "Impersonation of an organization" in names and (
-        "Password, code or personal data" in names or "Links or external actions" in names
-    ):
-        score += 2
-    if "Secrecy or isolation" in names and (
-        "Money or payment demand" in names or "Threats and intimidation" in names
-    ):
-        score += 2
+        score += 1
+    if "Impersonation of an organization" in names and direct_request:
+        score += 1
+    if "Secrecy or isolation" in names and "Money or payment demand" in names:
+        score += 1
 
-    # An ordinary link alone should never be called high risk.
-    score = min(score, 10)
+    # Without a request for money/data or an intimidating threat, a few
+    # isolated signals should not max out the scale.
+    serious = {
+        "Threats and intimidation", "Money or payment demand",
+        "Password, code or personal data", "Suspicious installation or remote access",
+    }
+    serious_count = len(names & serious)
+    if serious_count == 0:
+        score = min(score, 4)
+    elif serious_count == 1:
+        score = min(score, 6)
+    elif serious_count == 2:
+        score = min(score, 8)
+
+    # In educational / protective messages, detected keywords are quotations
+    # or warnings, not demands from the sender. Keep findings but lower risk.
+    if educational and not direct_request:
+        score = min(score, 2)
+    elif educational and "никогда не" in normalized:
+        score = min(score, 3)
+
+    score = max(0, min(int(score), 10))
     if score >= 7:
         risk = "Suspicious"
         recommendation = (
@@ -918,9 +963,9 @@ elif page == "🔎 Analyzer":
         if not message.strip():
             st.warning("Paste a message first, then run the analysis.")
         else:
-            with st.spinner("Analyzing with QALQAN AI..."):
+            with st.spinner("Analyzing with QALQAN rules..."):
                 result = analyze_message(message)
-                analysis_mode = "Offline rule-based analysis (no AI or API key needed)"
+                analysis_mode = "Offline risk assessment (no AI or API key needed)"
             st.session_state.analysis_mode = analysis_mode
             save_analysis(message, result)
             st.session_state.last_result = result
